@@ -1,0 +1,323 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+  background: #f4f6fa;
+  color: #18202f;
+}
+
+header {
+  height: 64px;
+  background: #fff;
+  border-bottom: 1px solid #e6e9ef;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 19px;
+}
+
+.source {
+  color: #7b8494;
+  font-size: 13px;
+}
+
+main {
+  max-width: 980px;
+  margin: 45px auto;
+  padding: 0 20px;
+  min-height: calc(100vh - 150px);
+}
+
+.card, .topCard {
+  background: white;
+  border: 1px solid #e7eaf0;
+  border-radius: 18px;
+  box-shadow: 0 8px 30px rgba(20, 30, 50, .05);
+}
+
+#searchPage {
+  max-width: 700px;
+  margin: 90px auto;
+  padding: 42px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.sub {
+  color: #7c8492;
+  margin: 0 0 28px;
+}
+
+.searchBox {
+  display: flex;
+  gap: 10px;
+}
+
+input, select {
+  height: 48px;
+  border: 1px solid #dfe3ea;
+  border-radius: 11px;
+  background: #fff;
+  padding: 0 14px;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus, select:focus {
+  border-color: #5668f5;
+  box-shadow: 0 0 0 3px rgba(86,104,245,.1);
+}
+
+.searchBox input {
+  flex: 1;
+}
+
+button {
+  border: 0;
+  border-radius: 11px;
+  padding: 0 20px;
+  height: 48px;
+  background: #5668f5;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(.96);
+}
+
+.ghost {
+  background: #f1f3f7;
+  color: #303949;
+  height: 40px;
+  font-size: 13px;
+}
+
+.results {
+  margin-top: 20px;
+}
+
+.school {
+  width: 100%;
+  height: auto;
+  min-height: 70px;
+  text-align: left;
+  background: #fff;
+  color: #18202f;
+  border: 1px solid #e7eaf0;
+  margin-bottom: 9px;
+  padding: 13px 16px;
+  border-radius: 12px;
+}
+
+.school:hover {
+  background: #f7f8ff;
+  border-color: #5668f5;
+}
+
+.school strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.school span {
+  display: block;
+  color: #8a92a0;
+  font-size: 12px;
+}
+
+.message {
+  color: #d04b4b;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.topCard {
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.topCard h1 {
+  margin-top: 20px;
+}
+
+.topCard p {
+  color: #818a99;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  padding: 18px;
+}
+
+.controls > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.controls label {
+  font-size: 12px;
+  color: #777f8c;
+}
+
+.controls input, .controls select {
+  width: 145px;
+}
+
+.controls button {
+  margin-left: auto;
+}
+
+.dateNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 28px 0 18px;
+}
+
+.dateNav button {
+  width: 42px;
+  padding: 0;
+  background: #fff;
+  color: #303949;
+  border: 1px solid #e0e4eb;
+  font-size: 25px;
+}
+
+.timetable {
+  display: grid;
+  gap: 8px;
+}
+
+.period {
+  display: grid;
+  grid-template-columns: 75px 1fr;
+  min-height: 76px;
+  background: #fff;
+  border: 1px solid #e7eaf0;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.periodNo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f8fb;
+  font-weight: 800;
+  color: #687181;
+}
+
+.subject {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+
+.room {
+  color: #8b94a2;
+  font-weight: 500;
+  margin-left: 10px;
+  font-size: 13px;
+}
+
+.loading, .empty {
+  text-align: center;
+  padding: 45px 20px;
+  color: #7d8695;
+}
+
+.notice {
+  text-align: center;
+  color: #9aa1ad;
+  font-size: 12px;
+  margin: 25px 0;
+}
+
+footer {
+  text-align: center;
+  color: #9aa1ad;
+  font-size: 12px;
+  padding: 25px;
+}
+
+@media (max-width: 700px) {
+  header {
+    padding: 0 16px;
+  }
+
+  .source {
+    display: none;
+  }
+
+  main {
+    margin: 25px auto;
+    padding: 0 12px;
+  }
+
+  #searchPage {
+    margin: 45px auto;
+    padding: 28px 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .searchBox {
+    flex-direction: column;
+  }
+
+  .searchBox button {
+    width: 100%;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .controls input, .controls select {
+    width: 100%;
+  }
+
+  .controls button {
+    width: 100%;
+    grid-column: 1 / -1;
+  }
+
+  .period {
+    grid-template-columns: 55px 1fr;
+  }
+
+  .subject {
+    padding: 12px;
+  }
+}

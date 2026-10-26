@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>우리 학교 시간표</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="logo">📚 우리 학교 시간표</div>
+    <div class="source">NEIS 교육정보 개방포털</div>
+  </header>
+
+  <main>
+    <section id="searchPage" class="card">
+      <h1>학교를 검색하세요</h1>
+      <p class="sub">학교명을 입력하면 NEIS에서 학교 정보를 찾아옵니다.</p>
+
+      <div class="searchBox">
+        <input id="schoolInput" type="text" placeholder="예: 서울고등학교" autocomplete="off">
+        <button id="searchBtn">검색</button>
+      </div>
+
+      <div id="schoolResults" class="results"></div>
+      <div id="searchMessage" class="message"></div>
+    </section>
+
+    <section id="timetablePage" class="hidden">
+      <div class="topCard">
+        <button id="backBtn" class="ghost">← 학교 다시 선택</button>
+        <div>
+          <h1 id="schoolName">학교</h1>
+          <p id="schoolAddress"></p>
+        </div>
+      </div>
+
+      <div class="controls card">
+        <div>
+          <label>날짜</label>
+          <input id="dateInput" type="date">
+        </div>
+        <div>
+          <label>학년</label>
+          <select id="gradeInput">
+            <option value="">전체</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+          </select>
+        </div>
+        <div>
+          <label>반</label>
+          <input id="classInput" type="text" placeholder="예: 1">
+        </div>
+        <button id="loadBtn">시간표 보기</button>
+      </div>
+
+      <div class="dateNav">
+        <button id="prevBtn">‹</button>
+        <strong id="dateTitle"></strong>
+        <button id="nextBtn">›</button>
+      </div>
+
+      <div id="loading" class="loading hidden">시간표를 불러오는 중...</div>
+      <div id="empty" class="empty hidden">해당 날짜의 시간표가 없습니다.</div>
+
+      <div id="timetable" class="timetable"></div>
+
+      <p class="notice">
+        ※ 시간표 데이터는 NEIS 교육정보 개방포털에서 제공됩니다.
+        학교의 실제 시간표 변경사항과 API 반영 시점에 따라 차이가 있을 수 있습니다.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    © 2026 우리 학교 시간표 · NEIS Open API
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
