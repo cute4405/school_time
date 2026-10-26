@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>세명컴퓨터고등학교 시간표</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --bg:#e9edf3; --paper:#f8f9fb; --ink:#161d33; --sub:#667089; --line:#d3d9e4;
+  --blue:#2446d8; --blue-ink:#fff; --today:#fff3c4; --today-line:#e8b800;
+  --sl:90%; --ss:62%; --tl:24%; --ts:50%;
+  --font:"Pretendard Variable",Pretendard,"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0f1220; --paper:#171b2e; --ink:#eceff8; --sub:#8e98b4; --line:#2a3050;
+  --blue:#7b95ff; --blue-ink:#0f1220; --today:#2b2812; --today-line:#d9b32a;
+  --sl:24%; --ss:40%; --tl:86%; --ts:60%;
+}}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--ink);font-family:var(--font);font-size:15px;
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);min-height:100vh}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.wrap{max-width:760px;margin:0 auto;padding:22px 14px 40px}
+
+/* 상단 */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:18px}
+.top h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+.top h1 small{display:block;font-size:13px;font-weight:500;color:var(--sub);letter-spacing:0;margin-bottom:6px}
+#chg{background:none;border:0;color:var(--sub);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px}
+
+/* 조작줄 */
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.sel{display:flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden;background:var(--paper)}
+.sel select{appearance:none;-webkit-appearance:none;background:transparent;border:0;padding:8px 14px;font-weight:600;cursor:pointer}
+.sel select+select{border-left:1.5px solid var(--ink)}
+.wk{margin-left:auto;display:flex;align-items:center;gap:4px}
+.wk button{border:0;background:transparent;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px}
+.wk button:hover{background:var(--line)}
+#today{width:auto;padding:0 14px;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:600;font-size:13px}
+#today:hover{background:var(--ink);opacity:.85}
+#range{font-weight:700;font-size:16px;letter-spacing:-.02em;margin:0 0 10px}
+
+/* 시간표 */
+#out{background:var(--paper);border:1.5px solid var(--ink);border-radius:14px;overflow:hidden}
+table{width:100%;border-collapse:collapse;table-layout:fixed}
+th,td{padding:0;text-align:center}
+thead th{height:58px;font-weight:700;font-size:15px;border-bottom:1.5px solid var(--ink);vertical-align:middle}
+thead th span{display:block;font-size:12px;font-weight:500;color:var(--sub);margin-top:2px}
+thead th.t{background:var(--today);box-shadow:inset 0 -3px 0 var(--today-line)}
+th.n,td.n{width:38px;color:var(--sub);font-size:13px;font-weight:600;border-right:1px solid var(--line)}
+td{height:64px;border-top:1px solid var(--line);border-left:1px solid var(--line);padding:3px;vertical-align:stretch}
+td.n{border-left:0}
+td.t{background:color-mix(in srgb,var(--today) 55%,transparent)}
+tbody tr:first-child td{border-top:0}
+.s{display:flex;align-items:center;justify-content:center;height:100%;padding:0 4px;border-radius:7px;
+  font-size:13.5px;font-weight:600;line-height:1.25;word-break:keep-all;letter-spacing:-.02em;
+  background:hsl(var(--h) var(--ss) var(--sl));color:hsl(var(--h) var(--ts) var(--tl))}
+.e{display:block;height:100%;border-radius:7px;background:repeating-linear-gradient(135deg,transparent 0 6px,color-mix(in srgb,var(--line) 55%,transparent) 6px 7px)}
+#msg{text-align:center;color:var(--sub);padding:40px 16px;line-height:1.6}
+.err{color:#d33}
+
+/* 학교 검색 (학교 고정 안 할 때) */
+#setup{background:var(--paper);border:1.5px solid var(--ink);border-radius:14px;padding:18px}
+#setup h2{margin:0 0 12px;font-size:20px;letter-spacing:-.02em}
+.row{display:flex;gap:8px}
+#q{flex:1;min-width:0;padding:10px 12px;border:1.5px solid var(--ink);border-radius:10px;background:transparent}
+#find{padding:0 18px;border:0;border-radius:10px;background:var(--blue);color:var(--blue-ink);font-weight:700;cursor:pointer}
+#list button{display:block;width:100%;text-align:left;margin-top:6px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:transparent;cursor:pointer}
+#list button:hover{border-color:var(--ink)}
+#list small{color:var(--sub)}
+.hint{color:var(--sub);font-size:12.5px;margin-top:10px;line-height:1.5}
+
+@media (max-width:480px){
+  .wrap{padding:16px 8px 32px}
+  .top h1{font-size:22px}
+  .wk{margin-left:0;width:100%;justify-content:space-between}
+  td{height:60px;padding:2px}
+  .s{font-size:12.5px;padding:0 2px}
+  th.n,td.n{width:28px}
+}
+@media (prefers-reduced-motion:no-preference){
+  #out table{animation:in .35s ease-out}
+  @keyframes in{from{opacity:0}to{opacity:1}}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="setup" hidden>
+    <h2>학교 시간표</h2>
+    <div class="row"><input id="q" placeholder="학교 이름 (예: 서울고등학교)"><button id="find">검색</button></div>
+    <div id="list"></div>
+    <div class="hint">학교를 한 번 선택하면 다음부터는 열자마자 시간표가 나와요.</div>
+  </div>
+
+  <div id="view" hidden>
+    <div class="top">
+      <h1><small id="kindtxt">이번 주 시간표</small><span id="sname"></span></h1>
+      <button id="chg">학교 변경</button>
+    </div>
+    <div class="ctl">
+      <div class="sel"><select id="grade" aria-label="학년"></select><select id="cls" aria-label="반"></select></div>
+      <div class="wk">
+        <button id="prev" aria-label="이전 주">◀</button>
+        <button id="today">이번 주</button>
+        <button id="next" aria-label="다음 주">▶</button>
+      </div>
+    </div>
+    <p id="range"></p>
+    <div id="out"><div id="msg"></div></div>
+  </div>
+</div>
+
+<script>
+// ▼▼ 만든 사람이 딱 한 번만 설정 (사용자는 키를 몰라도 됩니다) ▼▼
+const CONFIG={
+  KEY:"26518d3177604142bbecb3f98380355c",          // NEIS 인증키 (open.neis.go.kr 에서 무료 발급)
+  SCHOOL:"세명컴퓨터고등학교", // 학교 고정 (비워 두면 사용자가 학교를 검색해 고름)
+  GRADE:1,         // SCHOOL을 입력했을 때 기본 학년
+  CLASS:1          // SCHOOL을 입력했을 때 기본 반
+};
+// ▲▲ ------------------------------------------------ ▲▲
+const $=id=>document.getElementById(id);
+const API="https://open.neis.go.kr/hub/";
+const KIND={"초등학교":"els","중학교":"mis","고등학교":"his","특수학교":"sps"};
+const DAYS=["월","화","수","목","금"];
+const HUES=[218,168,28,340,265,92,196,8,48,300]; // 과목 색 (10가지)
+let school=null, monday=getMonday(new Date());
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+function getMonday(d){d=new Date(d);const w=d.getDay();d.setDate(d.getDate()+(w===0?-6:1-w));d.setHours(0,0,0,0);return d}
+const ymd=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");
+const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
+const fmt=d=>`${d.getMonth()+1}월 ${d.getDate()}일`;
+const hue=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return HUES[h%HUES.length]};
+
+async function call(ep,params){
+  const key=CONFIG.KEY;
+  if(!key) throw new Error("관리자 설정이 필요해요. 파일 맨 위 CONFIG의 KEY에 인증키를 넣어 주세요.");
+  const u=new URL(API+ep);
+  Object.entries({KEY:key,Type:"json",pIndex:1,pSize:1000,...params}).forEach(([k,v])=>u.searchParams.set(k,v));
+  const r=await fetch(u);
+  const j=await r.json();
+  if(j.RESULT){ if(j.RESULT.CODE==="INFO-200") return []; throw new Error(j.RESULT.MESSAGE); }
+  const body=j[ep];
+  return body[1].row;
+}
+
+try{school=JSON.parse(store.get("school")||"null")}catch(e){}
+if(CONFIG.SCHOOL){
+  $("setup").hidden=true; $("view").hidden=false;
+  $("out").innerHTML='<div id="msg">불러오는 중…</div>';
+  (async()=>{
+    try{
+      if(!school||school.name!==CONFIG.SCHOOL){
+        const rows=(await call("schoolInfo",{SCHUL_NM:CONFIG.SCHOOL})).filter(r=>KIND[r.SCHUL_KND_SC_NM]);
+        const r=rows.find(x=>x.SCHUL_NM===CONFIG.SCHOOL)||rows[0];
+        if(!r) throw new Error("학교를 찾을 수 없어요. 설정의 학교 이름을 확인해 주세요.");
+        school={name:r.SCHUL_NM,kind:KIND[r.SCHUL_KND_SC_NM],edu:r.ATPT_OFCDC_SC_CODE,code:r.SD_SCHUL_CODE};
+        store.set("school",JSON.stringify(school));
+      }
+      openSchool();
+      $("chg").hidden=true;
+    }catch(e){$("out").innerHTML=`<div id="msg" class="err">${e.message}</div>`}
+  })();
+}else if(school) openSchool();
+else $("setup").hidden=false;
+
+$("find").onclick=async()=>{
+  const l=$("list"); l.textContent="검색 중…";
+  try{
+    const rows=await call("schoolInfo",{SCHUL_NM:$("q").value.trim()});
+    l.innerHTML="";
+    if(!rows.length){l.textContent="검색 결과가 없어요. 학교 이름을 다시 확인해 주세요.";return}
+    rows.filter(r=>KIND[r.SCHUL_KND_SC_NM]).forEach(r=>{
+      const b=document.createElement("button");
+      b.innerHTML=`${esc(r.SCHUL_NM)} <small>${esc(r.ORG_RDNMA||"")}</small>`;
+      b.onclick=()=>{school={name:r.SCHUL_NM,kind:KIND[r.SCHUL_KND_SC_NM],edu:r.ATPT_OFCDC_SC_CODE,code:r.SD_SCHUL_CODE};store.set("school",JSON.stringify(school));openSchool()};
+      l.appendChild(b);
+    });
+  }catch(e){l.innerHTML=`<span class="err">${e.message}</span>`}
+};
+$("q").onkeydown=e=>{if(e.key==="Enter")$("find").click()};
+
+function openSchool(){
+  $("setup").hidden=true; $("view").hidden=false;
+  $("sname").textContent=school.name;
+  const g=$("grade"), max=school.kind==="els"?6:3;
+  g.innerHTML=""; for(let i=1;i<=max;i++)g.add(new Option(i+"학년",i));
+  const c=$("cls"); c.innerHTML=""; for(let i=1;i<=20;i++)c.add(new Option(i+"반",i));
+  g.value=CONFIG.SCHOOL?CONFIG.GRADE:(store.get("grade")||1); c.value=CONFIG.SCHOOL?CONFIG.CLASS:(store.get("cls")||1);
+  load();
+}
+$("chg").onclick=()=>{$("view").hidden=true;$("setup").hidden=false};
+$("grade").onchange=$("cls").onchange=()=>{store.set("grade",$("grade").value);store.set("cls",$("cls").value);load()};
+$("prev").onclick=()=>{monday=addDays(monday,-7);load()};
+$("next").onclick=()=>{monday=addDays(monday,7);load()};
+$("today").onclick=()=>{monday=getMonday(new Date());load()};
+
+async function load(){
+  const fri=addDays(monday,4);
+  $("range").textContent=`${fmt(monday)} – ${fmt(fri)}`;
+  $("kindtxt").textContent=ymd(monday)===ymd(getMonday(new Date()))?"이번 주 시간표":"시간표";
+  $("out").innerHTML='<div id="msg">불러오는 중…</div>';
+  try{
+    const rows=await call(school.kind+"Timetable",{
+      ATPT_OFCDC_SC_CODE:school.edu,SD_SCHUL_CODE:school.code,
+      TI_FROM_YMD:ymd(monday),TI_TO_YMD:ymd(fri),
+      GRADE:$("grade").value,CLASS_NM:$("cls").value
+    });
+    render(rows);
+  }catch(e){$("out").innerHTML=`<div id="msg" class="err">${e.message}</div>`}
+}
+
+function render(rows){
+  if(!rows.length){$("out").innerHTML='<div id="msg">이 주에는 시간표가 없어요.<br>방학이거나 아직 등록되지 않았을 수 있어요.</div>';return}
+  const map={}; let maxP=0;
+  rows.forEach(r=>{const p=+r.PERIO;maxP=Math.max(maxP,p);(map[r.ALL_TI_YMD+"_"+p]=r.ITRT_CNTNT)});
+  const todayStr=ymd(new Date());
+  const dates=DAYS.map((_,i)=>addDays(monday,i));
+  let h='<table><thead><tr><th class="n"></th>'+dates.map((d,i)=>`<th class="${ymd(d)===todayStr?"t":""}">${DAYS[i]}<span>${d.getDate()}</span></th>`).join("")+'</tr></thead><tbody>';
+  for(let p=1;p<=maxP;p++){
+    h+=`<tr><td class="n">${p}</td>`;
+    dates.forEach(dt=>{
+      const d=ymd(dt), s=map[d+"_"+p], name=s?s.replace(/^\*/,""):"";
+      h+=`<td class="${d===todayStr?"t":""}">`+(name?`<span class="s" style="--h:${hue(name)}">${esc(name)}</span>`:'<span class="e"></span>')+"</td>";
+    });
+    h+="</tr>";
+  }
+  $("out").innerHTML=h+"</tbody></table>";
+}
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+</script>
+</body>
+</html>
